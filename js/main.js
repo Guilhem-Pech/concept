@@ -1,3 +1,5 @@
+/*jshint esversion:6, jquery:true, browser:true, devel:true */
+
 let erreurCritique = function() {
     alert('Paul Chalas est tellement fort qu\'il a fait bugger ta page');
 };
@@ -6,6 +8,7 @@ let erreurCritique = function() {
     "use strict";
 
     $(()=> { 
+        new Plateau('#caca',true);
         $.ajax({
             beforeSend: function () {
                 $('#pleaseWaitDialog').modal('show');
@@ -19,6 +22,8 @@ let erreurCritique = function() {
             if (data.result){
                 $('#loginNav').hide();
                 $('#disconectNav').show();
+                $('#welcomingMessage').html("Welcome "+data.username);
+                $('#pleaseconnectmessage').hide();
             }else{
                 $('#loginNav').show();
                 $('#disconectNav').hide();
@@ -28,7 +33,7 @@ let erreurCritique = function() {
         });
 
         $("#loginform").submit(function() {
-            let theForm = $(this)
+            let theForm = $(this);
             $.ajax({
                 type: theForm.attr('method'),
                 url: theForm.attr('action'),
@@ -42,7 +47,7 @@ let erreurCritique = function() {
             return false;
         });
         $("#disconnectform").submit(function() {
-            let theForm = $(this)
+            let theForm = $(this);
             $.ajax({
                 type: theForm.attr('method'),
                 url: theForm.attr('action'),
@@ -55,7 +60,7 @@ let erreurCritique = function() {
             return false;
         });
     });     
-})()
+})();
 
 
 

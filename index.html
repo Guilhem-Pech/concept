@@ -30,16 +30,13 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul id="loginNav" class="navbar-nav ml-auto">
-                        <form action="/json/login.php" method="post" id="loginform" class="form-inline my-2 my-lg-0"> 
-                            <input class="form-control mr-sm-2" type="email" name="email" placeholder="Email">
-                            <input class="form-control mr-sm-2" type="text" name="password" placeholder="Password">
-                            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-                            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signin">
-                                Register
-                            </button>
+                        <form action="/json/setusername.php" method="post" id="loginform" class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="text" name="username" placeholder="Username">
+                            <button class="btn btn-success my-2 my-sm-0" type="submit">Create</button>
                         </form>
                     </ul>
                     <ul class="navbar-nav ml-auto" id="disconectNav" style="display: none">
+                        <div id="welcomingMessage" class="box"></div>
                         <form action="/json/disconect.php" method="post" id="disconnectform" class="form-inline my-2 my-lg-0"> 
                             <button class="btn btn-danger my-2 my-sm-0" type="submit">Disconnect</button>
                         </form>
@@ -50,57 +47,17 @@
 
         <!-- Page Content -->
         <div class="container">
-            <div class="row">
+            <div class="row ">
                 <div class="col-lg-12 text-center">
                     <h1>Concept</h1>
                     <p class="lead">Make people guess hundreds of objects, characters, and titles by combining universal icons!</p>
+                    <div id = "caca"> </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Sign in modal --> 
-        <div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="Sign-In Modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Register page</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="registerform" action="/json/register.php" method="post">
-                            <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
-                                <div class="col-sm-10">
-                                    <input type="text   " class="form-control" id="inputEmail3" placeholder="Username">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword3" class="col-sm-2 col-form-label">Again</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div id="pleaseconnectmessage" class="jumbotron col-lg-12">
+                    <h1 class="display-4">You need to choose an  username !</h1>
+                    <p class="lead">Welcome to Concept ! A game where you need to guess words only by concepts.</p>
+                    <hr class="my-4">
+                    <p class="alert alert-warning">In order to play you need to choose a username on the top of the page.</p>
                 </div>
             </div>
         </div>
@@ -125,6 +82,7 @@
         <script src="js/vendor/bootstrap.js"></script>
         <script src="js/vendor/bootstrap.bundle.js"></script>
         <script src="js/plugins.js"></script>
+        <script src="js/plateau.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
