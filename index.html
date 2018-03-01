@@ -48,19 +48,23 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row ">
-                <div class="col-lg-12 text-center">
+                <div class="col-12 text-center">
                     <h1>Concept</h1>
                     <p class="lead">Make people guess hundreds of objects, characters, and titles by combining universal icons!</p>
-                    <div id = "caca"> </div>
+                    <div style="display: none" id="jetons" class="mustconnected draggable"></div>
+                    <div style="display: none" id="plateau" class="mustconnected"></div>
                 </div>
                 <div id="pleaseconnectmessage" class="jumbotron col-lg-12">
-                    <h1 class="display-4">You need to choose an  username !</h1>
+                    <h1 class="display-4">You have to choose an username !</h1>
                     <p class="lead">Welcome to Concept ! A game where you need to guess words only by concepts.</p>
                     <hr class="my-4">
-                    <p class="alert alert-warning">In order to play you need to choose a username on the top of the page.</p>
+                    <p class="alert alert-warning">In order to play you have to choose a username on the top of the
+                        page.</p>
                 </div>
             </div>
+
         </div>
+
 
         <div class="modal hide" id="pleaseWaitDialog" tabindex="-1" role="alert" aria-labelledby="Sign-In Modal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -79,6 +83,9 @@
 
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="js/vendor/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+                integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+                crossorigin="anonymous"></script>
         <script src="js/vendor/bootstrap.js"></script>
         <script src="js/vendor/bootstrap.bundle.js"></script>
         <script src="js/plugins.js"></script>

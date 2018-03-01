@@ -1,6 +1,6 @@
 /*jshint esversion:6, jquery:true, browser:true, devel:true */
 
-let error = function(customMessage){
+let error = function () {
     alert('Something bad append');
 };
 
@@ -13,16 +13,52 @@ class Plateau {
             type:'post'
         }).done(function(result){
             for(let path of result.test){
-                $(divId).append($('<img />').attr('src', path).addClass("img-fluid mr-1 mb-1").css("max-width","5.5%"));
+                new Concept(path, divId);
             }
-            
-            console.log(result);
         }).fail(error);
     }
 }
 
 class Concept {
-    constructor(image){
+    constructor(image, parent) {
+        self = this;
         this.image = image;
+        this.htmlObject = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({
+            "max-width": "5.5%"
+        });
+        this.htmlparent = $(parent).append(this.htmlObject);
+        // this.htmlObject.droppable();
+    }
+}
+
+class Jetons {
+    constructor(divId) {
+        this.images = null;
+        $.ajax({
+            url: '/json/jetonimages.php',
+            type: 'post'
+        }).done(function (result) {
+            for (let path of result.test) {
+                new Jeton(path, divId);
+            }
+        }).fail(error);
+    }
+}
+
+class Jeton {
+    constructor(image, parent) {
+        self = this;
+        this.image = image;
+        this.htmlObject = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({
+            "max-width": "5%",
+            cursor: "move"
+
+        });
+        this.htmlparent = $(parent).append(this.htmlObject);
+        this.htmlObject.draggable({
+            revert: "invalid",
+            stack: ".draggable",
+            helper: 'clone'
+        });
     }
 }

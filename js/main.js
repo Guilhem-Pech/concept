@@ -7,8 +7,8 @@ let erreurCritique = function() {
 (function () {
     "use strict";
 
-    $(()=> { 
-        new Plateau('#caca',true);
+    $(() => {
+
         $.ajax({
             beforeSend: function () {
                 $('#pleaseWaitDialog').modal('show');
@@ -22,6 +22,9 @@ let erreurCritique = function() {
             if (data.result){
                 $('#loginNav').hide();
                 $('#disconectNav').show();
+                new Jetons("#jetons");
+                new Plateau('#plateau', true);
+                $('.mustconnected').show();
                 $('#welcomingMessage').html("Welcome "+data.username);
                 $('#pleaseconnectmessage').hide();
             }else{
