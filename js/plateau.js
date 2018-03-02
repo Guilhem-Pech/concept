@@ -26,7 +26,21 @@ class Concept {
         this.htmlObject = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({
             "max-width": "5.5%"
         });
+        
         this.htmlparent = $(parent).append(this.htmlObject);
+        
+        this.htmlObject.hover(function(){
+            $(this).css({
+                "transform":"scale(2)",
+                "transition":"250ms ease-in-out",
+                "z-index":1
+            })
+        }, function(){ 
+            $(this).css({
+                "transform":"scale(1)",
+                "z-index": 0
+            })
+        });    
         // this.htmlObject.droppable();
     }
 }
@@ -51,9 +65,11 @@ class Jeton {
         this.image = image;
         this.htmlObject = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({
             "max-width": "5%",
-            cursor: "move"
+            cursor: "move",
+            "z-index" : 2
 
         });
+    
         this.htmlparent = $(parent).append(this.htmlObject);
         this.htmlObject.draggable({
             revert: "invalid",
