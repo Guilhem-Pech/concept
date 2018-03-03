@@ -465,6 +465,18 @@ mark,
     margin-right: 0.5rem;
 }
 
+.plateau {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+}
+
+.imagecontainer {
+    width: auto;
+    height: auto;
+    display: inline;
+}
+
 .initialism {
     font-size: 90%;
     text-transform: uppercase;
@@ -5874,6 +5886,7 @@ button.close {
 
 .popover-body {
     padding: 0.5rem 0.75rem;
+    text-align: center;
     color: #212529;
 }
 
