@@ -5,14 +5,13 @@ let error = function () {
 };
 
 class Plateau {
-    constructor(divId,isGuesser){
-        this.isGuesser = isGuesser;
+    constructor(divId) {
         this.images = null;
         $.ajax({
-            url:'/json/conceptimages.php',
-            type:'post'
-        }).done(function(result){
-            for(let path of result.test){
+            url: '/json/conceptimages.php',
+            type: 'post'
+        }).done(function (result) {
+            for (let path of result.test) {
                 new Concept(path, divId);
             }
         }).fail(error);
@@ -21,7 +20,7 @@ class Plateau {
 
 class Concept {
     constructor(image, parent) {
-        self = this;
+        var self = this;
         this.image = image;
         this.htmlImage = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({});
 
@@ -34,14 +33,14 @@ class Concept {
             "justify-content": "center",
 
         });
-        
+
         this.htmlparent = $(parent).append(this.htmlObject);
-        
-        this.htmlObject.hover(function(){
+
+        this.htmlObject.hover(function () {
             $(this).children().css({
-                "transform":"scale(2)",
-                "transition":"250ms ease-in-out",
-                "z-index":1
+                "transform": "scale(2)",
+                "transition": "250ms ease-in-out",
+                "z-index": 1
             });
             $(this).children(".jeton").css({
                 opacity: 0.5
@@ -51,7 +50,7 @@ class Concept {
             $(this).children().prop("z-index", function (val, old) {
                 return old - 1;
             }).css({
-                "transform":"scale(1)",
+                "transform": "scale(1)",
                 "z-index": 0
             });
             $(this).children(".jeton").css({
@@ -87,6 +86,7 @@ class Concept {
                 });
 
                 remove.on("click", function () {
+                    self.updateGame(true,self.image)
                     child.htmlObject.popover("hide");
                     child.htmlObject.remove();
                 });
@@ -98,9 +98,24 @@ class Concept {
                 child.htmlObject.on("click", function () {
                     child.htmlObject.popover();
                 })
+                self.updateGame(false,self.image,child.image);
             }
         });
     }
+
+    updateGame(remove,conceptImg,jetonImg) {
+        let toSend = {
+            concept: conceptImg,
+            jeton: jetonImg
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/json/updategame.php',
+            data: toSend
+        }).done(function (data) {
+            console.log(data);
+        });
+    };
 }
 
 class Jetons {
@@ -124,10 +139,10 @@ class Jeton {
         this.htmlObject = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1 jeton").css({
             "max-width": "5%",
             cursor: "move",
-            "z-index" : 2
+            "z-index": 2
 
         });
-    
+
         this.htmlparent = $(parent).append(this.htmlObject);
         this.htmlObject.draggable({
             revert: "invalid",

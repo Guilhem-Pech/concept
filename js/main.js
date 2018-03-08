@@ -1,4 +1,4 @@
-/*jshint esversion:6, jquery:true, browser:true, devel:true */
+/*jshint esnext: true, browser: true, devel: true, jquery: true*/
 
 let erreurCritique = function() {
     alert('Paul Chalas est tellement fort qu\'il a fait bugger ta page');
@@ -23,12 +23,13 @@ let erreurCritique = function() {
                 $('#loginNav').hide();
                 $('#disconectNav').show();
                 new Jetons("#jetons");
-                new Plateau('#plateau', true);
+                new Plateau('#plateau');
                 $('.mustconnected').show();
                 $('#welcomingMessage').html("Welcome "+data.username);
                 $('#pleaseconnectmessage').hide();
             }else{
                 $('#loginNav').show();
+                $('.mustconnected').hide();
                 $('#disconectNav').hide();
             }        
         }).fail(function () {
