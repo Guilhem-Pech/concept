@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5e702bef-e53d-412e-8837-3b7786e96057" name="ftp-concept-the-game.alwaysdata.net" url="http://concept-the-game.alwaysdata.net">
+        <fileTransfer host="ftp-concept-the-game.alwaysdata.net" port="21" rootFolder="/www">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

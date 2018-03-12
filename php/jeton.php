@@ -1,5 +1,5 @@
 <?php
-    include './pdo.php';
+include_once '../php/pdo.php';
     class Jeton {
         private $id;
         private $image;
