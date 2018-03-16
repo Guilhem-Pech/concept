@@ -1,6 +1,6 @@
 <?php
     session_start();
-require '../php/playingUsers.php';
+require_once '../php/playingUsers.php';
     $result = new stdClass();
     $result->success = true;
     $result->message = '';

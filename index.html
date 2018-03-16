@@ -57,6 +57,7 @@
                 icons!</p>
             <div style="display: none" id="jetons" class="mustconnected draggable"></div>
             <div style="display: none" id="plateau" class="mustconnected plateau"></div>
+            <form style="display: none" id="guessimput" action="/json/guess.php" method="post"></form>
             <ul class="list-group list-group-flush" id="GameFinder"></ul>
             <hr class="my-4 mustconnected">
             <div class="jumbotron" style="padding: 1rem; text-align: left; display: none">
@@ -99,7 +100,7 @@
 
 
 <div class="modal hide" id="joinGameModal" tabindex="-1" role="alert" aria-labelledby="Join Game modal"
-     aria-hidden="true">
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -129,6 +130,16 @@
     </div>
 </div>
 
+
+<div class="modal fade bd-example-modal-sm" id="guessedWord" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            Your word has been guessed !
+        </div>
+    </div>
+</div>
+
 <script src="js/vendor/modernizr-3.5.0.min.js"></script>
 <script src="js/vendor/jquery-3.2.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
@@ -140,6 +151,7 @@
 <script src="js/plugins.js"></script>
 <script src="js/plateau.js"></script>
 <script src="js/gameFinder.js"></script>
+<script src="js/guesser.js"></script>
 <script src="js/adaptStatus.js"></script>
 <script src="js/main.js"></script>
 </body>

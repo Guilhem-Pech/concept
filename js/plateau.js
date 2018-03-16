@@ -4,27 +4,39 @@ let error = function () {
     alert('Something bad append');
 };
 
+
 class Plateau {
-    constructor(divId, gameID) {
+    constructor(divId, gameID, guesser) {
         $(divId).empty();
-        let self = this;
         this.images = null;
         this.divId = divId;
+        this.guesser = guesser;
         this.concepts = Array();
-
         $(divId).data("GameID", gameID);
         $.ajax({
             url: '/json/conceptimages.php',
             type: 'post'
         }).done(result => {
             for (let path of result.test) {
-                let newConcept = new Concept(path, divId);
-                this.concepts[newConcept.image] = newConcept;
 
+                let newConcept = new Concept(path, divId, guesser);
+                this.concepts[newConcept.image] = newConcept;
             }
         }).fail(error);
+        this.timerUpdate = this.startAutoUpdating();
+    }
 
-        console.log("Starting auto updating", this.startAutoUpdating());
+    static createPlateauIfNotExist(div, gameID, guesser) {
+        if (!Plateau.plateau) {
+            Plateau.plateau = new Plateau(div, gameID, guesser);
+        } else if (Plateau.plateau.guesser && !guesser) {
+            Plateau.plateau = new Plateau(div, gameID, guesser);
+        }
+        return Plateau.plateau;
+    }
+
+    static getUniquePlateau() {
+        return Plateau.plateau;
     }
 
     setGameID(gameID) {
@@ -38,23 +50,30 @@ class Plateau {
     startAutoUpdating() {
         this.getUpdate();
         return setInterval(() => {
-            this.getUpdate()
+            if (!this.getUpdate()) {
+                this.stopAutoUpdating();
+                console.log(this.getUpdate());
+            }
         }, 3000);
     }
 
-    stopAutoUpdating(number) {
-        clearInterval(number);
+    stopAutoUpdating() {
+        console.log("Stop plateau update");
+        clearInterval(this.timerUpdate);
     }
 
     getUpdate() {
-        AdaptStatus.updatePlateau(this);
+        return AdaptStatus.updatePlateau(this);
     }
 
 }
 
+Plateau.plateau = null;
+
 class Concept {
-    constructor(image, parent) {
+    constructor(image, parent, guesser) {
         let self = this;
+        this.guesser = guesser;
         this.image = image;
         this.htmlImage = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({});
         this.child = false;
@@ -71,18 +90,21 @@ class Concept {
         this.htmlparent = $(parent).append(this.htmlObject);
 
         this.htmlObject.hover(this.onHover, this.outHover);
+        if (guesser) {
 
+            this.makeDroppable();
+        }
+    }
 
-
+    makeDroppable() {
         this.htmlObject.droppable({
             accept: this.isAccepted,
             drop: (event, ui) => {
                 try {
                     let draggable = ui.draggable;
-                    // draggable.attr("src");
                     let JetonName = draggable.attr("src");
                     let child = this.addJeton(JetonName);
-                    self.updateGame(false, self.image, child.image);
+                    this.updateGame(false, this.image, child.image);
                 } catch (error) {
                     this.removeHtmlJeton();
                 }
@@ -111,6 +133,14 @@ class Concept {
         });
         child.disableDrag();
 
+        if (this.guesser) {
+            this.makePopOver(child);
+        }
+        this.child = child;
+        return child;
+    }
+
+    makePopOver(child) {
         let dismiss = $("<bouton/>").addClass("btn btn-success").text("Abort").attr("type", "button").css("margin-left", "2px");
         let remove = $("<bouton/>").addClass("btn btn-danger").text("Remove").attr("type", "button");
 
@@ -130,8 +160,6 @@ class Concept {
         child.htmlObject.on("click", () => {
             child.htmlObject.popover();
         });
-        this.child = child;
-        return child;
     }
 
     removeJeton() {
@@ -195,7 +223,7 @@ class Concept {
 
 class Jetons {
     constructor(divId) {
-        $(divId).empty();
+        this.htmlObject = $(divId).empty();
         this.images = null;
         $.ajax({
             url: '/json/jetonimages.php',

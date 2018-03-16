@@ -4,10 +4,10 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Fri, 13 Feb 1998 13:13:13 GMT');
 header('Content-type: application/json');
 
-include '../php/concept.php';
-include "../php/jeton.php";
-include '../php/game.php';
-include '../php/PlacedJeton.php';
+include_once '../php/concept.php';
+include_once "../php/jeton.php";
+include_once '../php/game.php';
+include_once '../php/PlacedJeton.php';
 session_start();
 
 $result = new stdClass();
@@ -16,7 +16,7 @@ $result->message = '';
 $result->post = $_POST;
 
 
-if (isset($_POST['concept'])) {
+if (Game::findByID($_SESSION['GAME_ID'])->guesser->id == $_SESSION['UNIQUE_ID'] && isset($_POST['concept'])) {
     $concept = filter_input(INPUT_POST, 'concept');
     if (isset($_POST['jeton'])) {
         $jeton = filter_input(INPUT_POST, 'jeton');
@@ -36,7 +36,7 @@ if (isset($_POST['concept'])) {
 
 } else {
     $result->success = false;
-    $result->message = 'Wrong Ajax Request !';
+    $result->message = 'YOU CANNOT DO THAT!';
 }
 
 echo json_encode($result);

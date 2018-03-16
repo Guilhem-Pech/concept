@@ -1,5 +1,7 @@
 <?php
 include_once '../php/pdo.php';
+include_once '../php/playingUsers.php';
+include_once '../php/word.php';
 
 class Game
 {
@@ -7,6 +9,8 @@ class Game
     {
         $this->gameID = $result->id;
         $this->nom = $result->name;
+        $this->guesser = playingUsers::findByID($result->guesser);
+        $this->word = Word::getById($result->wordToGuess);
     }
 
     public static function findAll()
@@ -33,6 +37,25 @@ class Game
         }
     }
 
+    public static function setGuesser($id, $guesser)
+    {
+        $pdo = MyPdo::getConnection();
+        $sql = 'UPDATE currentGames SET guesser=:guesser WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+
+        $parameters = array(':id' => $id, ':guesser' => $guesser);
+
+        try {
+            $stmt->execute($parameters);
+            return intval($pdo->lastInsertId());
+
+        } catch (PDOException $e) {
+            echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+            echo 'Requête : ', $sql, PHP_EOL;
+            exit();
+        }
+    }
+
     public static function findByID($id)
     {
         $pdo = MyPdo::getConnection();
@@ -53,18 +76,57 @@ class Game
         }
     }
 
-    public static function insert($nom)
+    public static function insert($nom, $guesser)
     {
         $pdo = MyPdo::getConnection();
-        $sql = 'INSERT INTO currentGames(name)
-            VALUES(:nom)';
+        $sql = 'INSERT INTO currentGames(name,guesser)
+            VALUES(:nom,:guesser)';
         $stmt = $pdo->prepare($sql);
 
-        $parameters = array(':nom' => $nom);
+        $parameters = array(':nom' => $nom, ':guesser' => $guesser);
 
         try {
             $stmt->execute($parameters);
             return intval($pdo->lastInsertId());
+
+        } catch (PDOException $e) {
+            echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+            echo 'Requête : ', $sql, PHP_EOL;
+            exit();
+        }
+    }
+
+    public static function setWordRandom($id)
+    {
+        $randomWord = Word::getRandom();
+        $sql = 'UPDATE currentGames SET wordToGuess =' . $randomWord->id . ' WHERE id=:id';
+        $pdo = MyPdo::getConnection();
+        $stmt = $pdo->prepare($sql);
+
+        $parameters = array(':id' => $id,);
+
+        try {
+            $stmt->execute($parameters);
+            return intval($pdo->lastInsertId());
+
+        } catch (PDOException $e) {
+            echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+            echo 'Requête : ', $sql, PHP_EOL;
+            exit();
+        }
+    }
+
+    public static function remove($GAME_ID)
+    {
+        $pdo = MyPdo::getConnection();
+        $sql = 'DELETE FROM currentGames WHERE id = :id';
+        $stmt = $pdo->prepare($sql);
+
+        $parameters = array(':id' => $GAME_ID);
+
+        try {
+            $stmt->execute($parameters);
+            return true;
 
         } catch (PDOException $e) {
             echo 'Erreur : ', $e->getMessage(), PHP_EOL;
