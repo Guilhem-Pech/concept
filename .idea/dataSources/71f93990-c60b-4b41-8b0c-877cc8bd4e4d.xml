@@ -960,89 +960,92 @@
     <table id="241" parent="2" name="currentGames">
       <Engine>InnoDB</Engine>
     </table>
-    <column id="242" parent="238" name="id">
+    <table id="242" parent="2" name="playingUsers">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="243" parent="238" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="238" name="image">
+    <column id="244" parent="238" name="image">
       <Position>2</Position>
       <DataType>varchar(100)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="244" parent="238" name="image">
+    <index id="245" parent="238" name="image">
       <ColNames>image</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="245" parent="238" name="PRIMARY">
+    <key id="246" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="246" parent="238" name="image">
+    <key id="247" parent="238" name="image">
       <ColNames>image</ColNames>
       <UnderlyingIndexName>image</UnderlyingIndexName>
     </key>
-    <column id="247" parent="239" name="id">
+    <column id="248" parent="239" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="239" name="image">
+    <column id="249" parent="239" name="image">
       <Position>2</Position>
       <DataType>varchar(100)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="249" parent="239" name="image">
+    <index id="250" parent="239" name="image">
       <ColNames>image</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="250" parent="239" name="PRIMARY">
+    <key id="251" parent="239" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="251" parent="239" name="image">
+    <key id="252" parent="239" name="image">
       <ColNames>image</ColNames>
       <UnderlyingIndexName>image</UnderlyingIndexName>
     </key>
-    <column id="252" parent="240" name="gameID">
+    <column id="253" parent="240" name="gameID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="240" name="conceptID">
+    <column id="254" parent="240" name="conceptID">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="240" name="jetonID">
+    <column id="255" parent="240" name="jetonID">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="255" parent="240" name="ConceptIDC">
+    <index id="256" parent="240" name="ConceptIDC">
       <ColNames>conceptID</ColNames>
     </index>
-    <index id="256" parent="240" name="JetonIDC">
+    <index id="257" parent="240" name="JetonIDC">
       <ColNames>jetonID</ColNames>
     </index>
-    <key id="257" parent="240" name="PRIMARY">
+    <key id="258" parent="240" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>gameID
 conceptID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="258" parent="240" name="gameIDC">
+    <foreign-key id="259" parent="240" name="gameIDC">
       <ColNames>gameID</ColNames>
       <RefSchemaName>concept-the-game_database</RefSchemaName>
       <RefTableName>currentGames</RefTableName>
@@ -1050,7 +1053,7 @@ conceptID</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="259" parent="240" name="ConceptIDC">
+    <foreign-key id="260" parent="240" name="ConceptIDC">
       <ColNames>conceptID</ColNames>
       <RefSchemaName>concept-the-game_database</RefSchemaName>
       <RefTableName>Concept</RefTableName>
@@ -1058,7 +1061,7 @@ conceptID</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="260" parent="240" name="JetonIDC">
+    <foreign-key id="261" parent="240" name="JetonIDC">
       <ColNames>jetonID</ColNames>
       <RefSchemaName>concept-the-game_database</RefSchemaName>
       <RefTableName>Jeton</RefTableName>
@@ -1066,23 +1069,56 @@ conceptID</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="261" parent="241" name="id">
+    <column id="262" parent="241" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="241" name="name">
+    <column id="263" parent="241" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="263" parent="241" name="PRIMARY">
+    <key id="264" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
+    <column id="265" parent="242" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="266" parent="242" name="playername">
+      <Position>2</Position>
+      <DataType>varchar(60)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="267" parent="242" name="game">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="268" parent="242" name="gameIDply">
+      <ColNames>game</ColNames>
+    </index>
+    <key id="269" parent="242" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="270" parent="242" name="gameIDply">
+      <ColNames>game</ColNames>
+      <RefSchemaName>concept-the-game_database</RefSchemaName>
+      <RefTableName>currentGames</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
   </database-model>
 </dataSource>

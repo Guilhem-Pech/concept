@@ -33,6 +33,26 @@ class Game
         }
     }
 
+    public static function findByID($id)
+    {
+        $pdo = MyPdo::getConnection();
+        $sql = 'SELECT *  FROM currentGames WHERE id = :id';
+        $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+        $stmt->bindValue('id', $id, PDO::PARAM_INT); // Lie les paramètres de manière sécurisée.
+        try {
+            $stmt->execute(); // Exécution de la requête.
+            if ($stmt->rowCount() == 0) {
+                return null;
+            }
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            while ($result = $stmt->fetch()) {
+                return new Game($result);
+            }
+        } catch (PDOException $e) {
+            return "Something went wrong: " . $e->getMessage();
+        }
+    }
+
     public static function insert($nom)
     {
         $pdo = MyPdo::getConnection();
@@ -44,7 +64,7 @@ class Game
 
         try {
             $stmt->execute($parameters);
-            return true;
+            return intval($pdo->lastInsertId());
 
         } catch (PDOException $e) {
             echo 'Erreur : ', $e->getMessage(), PHP_EOL;

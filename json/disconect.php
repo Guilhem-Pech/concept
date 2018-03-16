@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require '../php/playingUsers.php';
     $result = new stdClass();
     $result->success = true;
     $result->message = '';
@@ -9,7 +9,7 @@ session_start();
     header('Expires: Fri, 13 Feb 1998 01:00:00 GMT');
     header('Content-type: application/json');
 
-
+playingUsers::remove($_SESSION['UNIQUE_ID']);
 $_SESSION = array();
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();

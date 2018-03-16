@@ -9,32 +9,7 @@ let erreurCritique = function() {
 
     $(() => {
 
-        $.ajax({
-            beforeSend: function () {
-                $('#pleaseWaitDialog').modal('show');
-            },
-            complete: function () {
-                $("#pleaseWaitDialog").modal('hide');
-            },   
-            url:"/json/getstatus.php",
-            method:"post"
-        }).done(function (data) {
-            if (data.result){
-                $('#loginNav').hide();
-                $('#disconectNav').show();
-                new Jetons("#jetons");
-                new Plateau('#plateau');
-                $('.mustconnected').show();
-                $('#welcomingMessage').html("Welcome "+data.username);
-                $('#pleaseconnectmessage').hide();
-            }else{
-                $('#loginNav').show();
-                $('.mustconnected').hide();
-                $('#disconectNav').hide();
-            }        
-        }).fail(function () {
-            erreurCritique();
-        });
+        AdaptStatus.updateStatus();
 
         $("#loginform").submit(function() {
             let theForm = $(this);
@@ -42,7 +17,7 @@ let erreurCritique = function() {
                 type: theForm.attr('method'),
                 url: theForm.attr('action'),
                 data: theForm.serialize()
-            }).done(function(result){
+            }).done(result => {
                 console.log(result);
                 if (result.success){
                     location.reload();
@@ -56,7 +31,7 @@ let erreurCritique = function() {
                 type: theForm.attr('method'),
                 url: theForm.attr('action'),
                 data: theForm.serialize()
-            }).done(function(result){
+            }).done(result => {
                 if (result.success){
                     location.reload();
                 }                  
