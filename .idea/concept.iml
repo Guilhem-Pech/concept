@@ -7,5 +7,7 @@
     <orderEntry type="library" name="@types/jquery" level="application" />
     <orderEntry type="library" name="@types/jqueryui" level="application" />
     <orderEntry type="library" name="jquery-3.2.1" level="application" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
+    <orderEntry type="library" name="jquery.ui.touch-punch" level="application" />
   </component>
 </module>

@@ -54,6 +54,9 @@ class GameFinder {
     }
 
     addGames(data) {
+        if (!data.gameAvailable) {
+            return;
+        }
         for (let game of data.gameAvailable) {
             let newGame = new JoinGame(game);
             if (!this.gamesAvailable[newGame.id]) {
@@ -73,7 +76,7 @@ class JoinGame {
         this.id = GameInfo.gameID;
 
         this.htmlObject = $("<button/>").attr("type", "button").addClass("list-group-item list-group-item-action")
-            .html(GameInfo.nom + "<span style='margin-left: 10px' class=\"badge badge-info\">players: NA </span>").attr("data", GameInfo.gameID);
+            .html(GameInfo.nom).attr("data", GameInfo.gameID);
 
         this.htmlObject.on("click", () => {
             this.join();
@@ -98,10 +101,18 @@ class GameModal {
     constructor(id) {
 
         this.htmlObject = $(id);
-        $("#joinGameModal").on("show.bs.modal", () => {
+        this.leaveButton = $("#leaveButtonJ");
+
+        this.leaveButton.on("click", () => {
+            AdaptStatus.leaveGame();
+            this.hide();
+            AdaptStatus.updateStatus();
+        });
+        let joinGameModal = $("#joinGameModal");
+        joinGameModal.on("show.bs.modal", () => {
             this.timer = this.startAutoUpdating();
         });
-        $("#joinGameModal").on("hide.bs.modal", () => {
+        joinGameModal.on("hide.bs.modal", () => {
             this.stopAutoUpdating();
         });
     }
@@ -114,20 +125,20 @@ class GameModal {
         this.htmlObject.modal("hide");
     }
 
-    showMinWarning() {
+    static showMinWarning() {
         $("#minplayers").show()
 
     }
 
-    showCreation() {
+    static showCreation() {
         $("#creationForm").show();
     }
 
-    hideMinWarning() {
+    static hideMinWarning() {
         $("#minplayers").hide()
     }
 
-    hideCreation() {
+    static hideCreation() {
         $("#creationForm").hide();
     }
 
@@ -154,7 +165,6 @@ class GameModal {
     }
 
     stopAutoUpdating() {
-        console.log("Stopped update list");
         clearInterval(this.timer);
     }
 
@@ -170,7 +180,7 @@ class CreateGame {
 
         this.badgeObject = $("<span/>").addClass("badge badge-success").html("Create a new Game !");
         this.htmlObject = $("<button/>").attr("type", "button").addClass("list-group-item list-group-item-action").append(this.badgeObject);
-        this.htmlObject.on("click", event => {
+        this.htmlObject.on("click", () => {
             $("#joinGameModal").modal({
                 keyboard: false,
                 show: true,
@@ -179,13 +189,11 @@ class CreateGame {
             });
             $("#createGameSubmit").submit(function () {
                 let theForm = $(this);
-                console.log(theForm.attr('method'));
                 $.ajax({
                     type: theForm.attr('method'),
                     url: theForm.attr('action'),
                     data: theForm.serialize()
                 }).done(result => {
-                    //console.log(result);
                     if (result.success) {
                         AdaptStatus.updateStatus();
                     }

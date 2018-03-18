@@ -17,8 +17,10 @@ if(isset($_SESSION['ID'])){
     $result->username = $_SESSION['ID'];
     if (isset($_SESSION['GAME_ID'])) {
         $result->gameID = $_SESSION['GAME_ID'];
-        if (Game::findByID($_SESSION['GAME_ID'])->guesser->id == $_SESSION['UNIQUE_ID']) {
+        $theGame = Game::findByID($_SESSION['GAME_ID']);
+        if ($theGame->guesser->id == $_SESSION['UNIQUE_ID']) {
             $result->imguesser = true;
+            $result->wordToMakeGuess = $theGame->word;
         }
         $numberOfPlayers = playingUsers::countPlayerByGame($_SESSION['GAME_ID'])->numberOfPlayers;
         $result->number = $numberOfPlayers;
@@ -27,6 +29,7 @@ if(isset($_SESSION['ID'])){
         } elseif ($numberOfPlayers == 0) {
             $result->result = false;
             $result->message = 'This game does not exist anymore';
+            $result->gameID = null;
             $_SESSION['GAME_ID'] = null;
             playingUsers::setGame($_SESSION['UNIQUE_ID'], null);
         } else {

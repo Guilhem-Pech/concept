@@ -3,35 +3,40 @@ class AdaptStatus {
     constructor(data) {
         console.log(data);
         let modal = new GameModal("#joinGameModal");
-        this.guesser = Guess.getUniqueGuesser("#guessimput");
+
         AdaptStatus.modal = modal;
-        this.guesser.hide();
+        if (this.guesser) {
+            this.guesser.hide();
+        }
+        let leaveNav = $('#leaveNav');
+        let gameFinder = $('#GameFinder');
+        leaveNav.hide();
         if (data.result) {
             $('#loginNav').hide();
             $('.mustconnected').show();
             $('#welcomingMessage').html("Welcome " + data.username);
             $('#pleaseconnectmessage').hide();
-            $('#GameFinder').hide();
+            gameFinder.hide();
             if (data.gameID) {
-
-
+                this.guesser = Guess.getUniqueGuesser("#guessimput", data.wordToMakeGuess);
+                this.guesser.hide();
                 modal.hide();
                 if (data.notEnoughPlayer) {
                     modal.show();
-                    modal.showMinWarning();
-                    modal.hideCreation();
+                    GameModal.showMinWarning();
+                    GameModal.hideCreation();
 
                 } else {
-
                     modal.hide();
-                    modal.hideMinWarning();
+                    GameModal.hideMinWarning();
+                    this.guesser.show();
+                    leaveNav.show();
                     if (data.imguesser) {
                         Plateau.createPlateauIfNotExist("#plateau", data.gameID, true);
                         if (!AdaptStatus.Jetons) {
                             AdaptStatus.Jetons = new Jetons("#jetons");
                         }
                     } else {
-                        this.guesser.show();
                         if (AdaptStatus.Jetons) {
                             AdaptStatus.Jetons.htmlObject.empty();
                         }
@@ -43,13 +48,13 @@ class AdaptStatus {
                 $("#plateau").empty();
                 $("#jetons").empty();
                 GameFinder.getGameFinder("#GameFinder");
-                $('#GameFinder').show();
+                gameFinder.show();
             }
         } else {
 
             $('#loginNav').show();
             $('.mustconnected').hide();
-            modal.showCreation();
+            GameModal.showCreation();
         }
     }
 
@@ -84,12 +89,12 @@ class AdaptStatus {
     static updateJoining(data) {
         if (data.notEnoughPlayer) {
             if (data.gameID) {
-                AdaptStatus.modal.hideCreation();
-                AdaptStatus.modal.showMinWarning();
+                GameModal.hideCreation();
+                GameModal.showMinWarning();
             }
         } else {
 
-            AdaptStatus.modal.showCreation();
+            GameModal.showCreation();
             console.log(data);
             if (data.number >= 2) {
                 AdaptStatus.modal.hide();
@@ -99,14 +104,11 @@ class AdaptStatus {
         }
     }
 
-
-
     static updatePlateau(plateau) {
         $.ajax({
             url: '/json/getstatus.php',
             type: 'get'
         }).done(result => {
-            console.log(result.imguesser, 'PUTAIN', Plateau.getUniquePlateau().guesser);
             if (!result.imguesser && Plateau.getUniquePlateau().guesser) {
                 console.log("Hey I'm a freaking idiot");
                 Guess.getUniqueGuesser().showModal();
@@ -118,21 +120,29 @@ class AdaptStatus {
                     conceptWhereAddedJeton.push(concept);
                     concept.addJeton(placed.jetonID.image);
                 }
+
+
                 for (let concept in plateau.concepts) {
-                    if (conceptWhereAddedJeton.indexOf(plateau.concepts[concept], 0) < 0) {
+                    if (plateau.concepts.hasOwnProperty(concept) && conceptWhereAddedJeton.indexOf(plateau.concepts[concept], 0) < 0) {
                         plateau.concepts[concept].removeHtmlJeton();
                     }
                 }
-            } else if (result.notEnoughPlayer || !result.gameID) {
+
+
+            } else if (result.notEnoughPlayer && result.gameID) {
                 plateau.stopAutoUpdating();
                 AdaptStatus.leaveGame();
                 alert("Sorry ... Your last partner has left and there is no more player to play with :'(");
+                location.reload();
 
-                AdaptStatus.updateStatus();
-
+            } else if (!result.gameID) {
+                plateau.stopAutoUpdating();
+                location.reload();
             } else {
                 for (let concept in plateau.concepts) {
-                    plateau.concepts[concept].removeHtmlJeton();
+                    if (plateau.concepts.hasOwnProperty(concept)) {
+                        plateau.concepts[concept].removeHtmlJeton();
+                    }
                 }
             }
 

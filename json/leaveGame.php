@@ -16,16 +16,20 @@ include_once '../php/playingUsers.php';
 if (isset($_SESSION["GAME_ID"])) {
     $game = Game::findByID($_SESSION["GAME_ID"]);
     if ($game) {
+
+        if (playingUsers::countPlayerByGame($_SESSION['GAME_ID'])->numberOfPlayers <= 2) {
+            Game::remove($_SESSION['GAME_ID']);
+        }
         playingUsers::setGame($_SESSION['UNIQUE_ID'], null);
-        if (playingUsers::countPlayerByGame($_SESSION['GAME_ID']) <= 1) {
+        if ($game->guesser == $_SESSION['UNIQUE_ID']) {
             Game::remove($_SESSION['GAME_ID']);
         }
     }
     $_SESSION['GAME_ID'] = null;
 
 } else {
-    $result->success = false;
-    $result->message = 'Sorry, an error occurred during your disconnection ...';
+    $result->success = true;
+    $result->message = '';
 }
 
 echo json_encode($result);

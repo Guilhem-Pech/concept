@@ -39,26 +39,18 @@ class Plateau {
         return Plateau.plateau;
     }
 
-    setGameID(gameID) {
-        $(this.divId).data("gameID", gameID);
-    }
-
-    getGameID() {
-        return $(this.divId).data("gameID");
-    }
 
     startAutoUpdating() {
         this.getUpdate();
         return setInterval(() => {
             if (!this.getUpdate()) {
                 this.stopAutoUpdating();
-                console.log(this.getUpdate());
+                this.getUpdate();
             }
         }, 3000);
     }
 
     stopAutoUpdating() {
-        console.log("Stop plateau update");
         clearInterval(this.timerUpdate);
     }
 
@@ -72,7 +64,6 @@ Plateau.plateau = null;
 
 class Concept {
     constructor(image, parent, guesser) {
-        let self = this;
         this.guesser = guesser;
         this.image = image;
         this.htmlImage = $('<img />').attr('src', this.image).addClass("img-fluid mr-1 mb-1").css({});
@@ -96,6 +87,22 @@ class Concept {
         }
     }
 
+    static updateGame(remove, conceptImg, jetonImg) {
+        let toSend = {
+            concept: conceptImg,
+            jeton: jetonImg
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/json/updategame.php',
+            data: toSend
+        });
+    };
+
+    getJeton() {
+        return this.child
+    }
+
     makeDroppable() {
         this.htmlObject.droppable({
             accept: this.isAccepted,
@@ -104,40 +111,12 @@ class Concept {
                     let draggable = ui.draggable;
                     let JetonName = draggable.attr("src");
                     let child = this.addJeton(JetonName);
-                    this.updateGame(false, this.image, child.image);
+                    Concept.updateGame(false, this.image, child.image);
                 } catch (error) {
                     this.removeHtmlJeton();
                 }
             }
         });
-    }
-
-    getJeton() {
-        return this.child
-    }
-
-    addJeton(JetonName) {
-        if (this.getJeton() && this.getJeton().image == JetonName) {
-            return;
-        } else if (this.getJeton()) {
-            this.removeJeton();
-        }
-        let child = new Jeton(JetonName, this.htmlObject);
-        child.htmlObject.attr({
-            "data-container": "body",
-            "data-toggle": "popover",
-        });
-        child.htmlObject.css({
-            position: "absolute",
-            "width": "3%",
-        });
-        child.disableDrag();
-
-        if (this.guesser) {
-            this.makePopOver(child);
-        }
-        this.child = child;
-        return child;
     }
 
     makePopOver(child) {
@@ -162,9 +141,28 @@ class Concept {
         });
     }
 
-    removeJeton() {
-        this.removeHtmlJeton();
-        this.updateGame(true, this.image);
+    addJeton(JetonName) {
+        if (this.getJeton() && this.getJeton().image === JetonName) {
+            return;
+        } else if (this.getJeton()) {
+            this.removeJeton();
+        }
+        let child = new Jeton(JetonName, this.htmlObject);
+        child.htmlObject.attr({
+            "data-container": "body",
+            "data-toggle": "popover",
+        });
+        child.htmlObject.css({
+            position: "absolute",
+            "width": "3%",
+        });
+        child.disableDrag();
+
+        if (this.guesser) {
+            this.makePopOver(child);
+        }
+        this.child = child;
+        return child;
     }
 
     removeHtmlJeton() {
@@ -176,10 +174,9 @@ class Concept {
         jetonHtml.remove();
     }
 
-    isAccepted() {
-        if ($(this).children(".jeton").length > 0)
-            return false;
-        return true;
+    removeJeton() {
+        this.removeHtmlJeton();
+        Concept.updateGame(true, this.image);
     }
 
     outHover() {
@@ -206,19 +203,10 @@ class Concept {
         })
     }
 
-    updateGame(remove,conceptImg,jetonImg) {
-        let toSend = {
-            concept: conceptImg,
-            jeton: jetonImg
-        };
-        $.ajax({
-            type: 'POST',
-            url: '/json/updategame.php',
-            data: toSend
-        }).done(function (data) {
-            console.log(data);
-        });
-    };
+    isAccepted() {
+        return $(this).children(".jeton").length <= 0;
+
+    }
 }
 
 class Jetons {

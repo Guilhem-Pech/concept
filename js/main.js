@@ -1,7 +1,8 @@
 /*jshint esnext: true, browser: true, devel: true, jquery: true*/
 
-let erreurCritique = function() {
-    alert('Paul Chalas est tellement fort qu\'il a fait bugger ta page');
+let erreurCritique = function (jqXHR, textStatus) {
+    console.log("An error occured");
+    console.log(textStatus);
 };
 
 (function () {
@@ -18,7 +19,6 @@ let erreurCritique = function() {
                 url: theForm.attr('action'),
                 data: theForm.serialize()
             }).done(result => {
-                console.log(result);
                 if (result.success){
                     location.reload();
                 }
@@ -38,6 +38,10 @@ let erreurCritique = function() {
             }).fail(erreurCritique);       
             return false;
         });
+        $('#leaveNav').on('click', () => {
+            AdaptStatus.leaveGame();
+            AdaptStatus.updateStatus();
+        })
     });     
 })();
 

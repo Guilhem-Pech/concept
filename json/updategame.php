@@ -20,6 +20,12 @@ if (Game::findByID($_SESSION['GAME_ID'])->guesser->id == $_SESSION['UNIQUE_ID'] 
     $concept = filter_input(INPUT_POST, 'concept');
     if (isset($_POST['jeton'])) {
         $jeton = filter_input(INPUT_POST, 'jeton');
+        foreach (PlacedJeton::findAllByGame($_SESSION['GAME_ID']) as $Jeton) {
+            if (preg_match("/ico-pt-/", $Jeton->jetonID->image) && $Jeton->jetonID->image == $jeton) {
+                PlacedJeton::removeJetonOnConcept($_SESSION['GAME_ID'], $Jeton->conceptID->image);
+            }
+        };
+
         $result->gameID = $_SESSION['GAME_ID'];
         $insert = PlacedJeton::insertJetonOnConcept($_SESSION['GAME_ID'], $concept, $jeton);
         if (is_string($insert)) {
