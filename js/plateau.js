@@ -27,9 +27,7 @@ class Plateau {
     }
 
     static createPlateauIfNotExist(div, gameID, guesser) {
-        if (!Plateau.plateau) {
-            Plateau.plateau = new Plateau(div, gameID, guesser);
-        } else if (Plateau.plateau.guesser && !guesser) {
+        if (!Plateau.plateau || Plateau.plateau.guesser && !guesser) {
             Plateau.plateau = new Plateau(div, gameID, guesser);
         }
         return Plateau.plateau;

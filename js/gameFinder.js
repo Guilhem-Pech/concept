@@ -117,14 +117,6 @@ class GameModal {
         });
     }
 
-    show() {
-        this.htmlObject.modal("show");
-    }
-
-    hide() {
-        this.htmlObject.modal("hide");
-    }
-
     static showMinWarning() {
         $("#minplayers").show()
 
@@ -140,6 +132,14 @@ class GameModal {
 
     static hideCreation() {
         $("#creationForm").hide();
+    }
+
+    show() {
+        this.htmlObject.modal("show");
+    }
+
+    hide() {
+        this.htmlObject.modal("hide");
     }
 
     startAutoUpdating() {

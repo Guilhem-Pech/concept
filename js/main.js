@@ -12,32 +12,24 @@ let erreurCritique = function (jqXHR, textStatus) {
 
         AdaptStatus.updateStatus();
 
-        $("#loginform").submit(function() {
+        $("#loginform").submit(sendFormAndReload);
+
+        function sendFormAndReload() {
             let theForm = $(this);
             $.ajax({
                 type: theForm.attr('method'),
                 url: theForm.attr('action'),
                 data: theForm.serialize()
             }).done(result => {
-                if (result.success){
+                if (result.success) {
                     location.reload();
                 }
             }).fail(erreurCritique);
             return false;
-        });
-        $("#disconnectform").submit(function() {
-            let theForm = $(this);
-            $.ajax({
-                type: theForm.attr('method'),
-                url: theForm.attr('action'),
-                data: theForm.serialize()
-            }).done(result => {
-                if (result.success){
-                    location.reload();
-                }                  
-            }).fail(erreurCritique);       
-            return false;
-        });
+        }
+
+        $("#disconnectform").submit(sendFormAndReload);
+       
         $('#leaveNav').on('click', () => {
             AdaptStatus.leaveGame();
             AdaptStatus.updateStatus();
